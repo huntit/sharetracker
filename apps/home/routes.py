@@ -7,7 +7,7 @@ from apps.home import blueprint
 from flask import render_template, request
 from flask_login import login_required
 from jinja2 import TemplateNotFound
-
+from apps.authentication.models import Portfolio
 
 @blueprint.route('/index')
 @login_required
@@ -27,6 +27,10 @@ def route_template(template):
 
         # Detect the current page
         segment = get_segment(request)
+
+        if segment == 'portfolio.html':
+            portfolio = Portfolio.query.all()
+            return render_template("home/" + template, segment=segment, portfolio=portfolio)
 
         # Serve the file (if exists) from app/templates/home/FILE.html
         return render_template("home/" + template, segment=segment)

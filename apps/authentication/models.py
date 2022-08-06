@@ -46,3 +46,14 @@ def request_loader(request):
     username = request.form.get('username')
     user = Users.query.filter_by(username=username).first()
     return user if user else None
+
+
+class Portfolio(db.Model):
+    __tablename__ = 'Portfolio'
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(6), unique=True, nullable=False)
+    units = db.Column(db.Integer, unique=False)
+    last = db.Column(db.Numeric(10,3))
+
+    def __repr__(self):
+        return f"Portfolio(code = {self.code}, units = {self.units}, last = {self.last})"
