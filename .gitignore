@@ -12,8 +12,13 @@ __pycache__/
 *.log
 
 # venv
-env
-venv
+env/
+venv/
+**/venv/
+
+# environment variables
+.env
+**/.env
 
 # other
 .DS_Store
@@ -26,8 +31,13 @@ _templates
 # javascript
 package-lock.json
 .vscode/symbols.json
+node_modules/
+**/node_modules/
+**/yarn.lock
+**/.temp
 
-apps/static/assets/node_modules
-apps/static/assets/yarn.lock
-apps/static/assets/.temp
+# ShareTracker-Web specific
+ShareTracker-Web/sharetracker/apps/static/assets/node_modules
+ShareTracker-Web/sharetracker/apps/static/assets/yarn.lock
+ShareTracker-Web/sharetracker/apps/static/assets/.temp
 
