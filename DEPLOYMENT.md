@@ -129,3 +129,72 @@ For SQLite database:
 cp ShareTracker-Web/sharetracker/apps/db.sqlite3 backup_$(date +%Y%m%d).sqlite3
 ```
 
+## Switching to MySQL (Production)
+
+If you prefer MySQL over the default SQLite in production, configure SQLAlchemy to use MySQL via environment variables and install a MySQL driver.
+
+### 1) Install system packages (server-side)
+
+```bash
+sudo apt update
+sudo apt install mysql-server
+# Optional: client dev headers if using mysqlclient
+sudo apt install default-libmysqlclient-dev build-essential
+```
+
+### 2) Create database and user
+
+```bash
+sudo mysql
+CREATE DATABASE sharetracker CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'sharetracker'@'localhost' IDENTIFIED BY 'strong_password_here';
+GRANT ALL PRIVILEGES ON sharetracker.* TO 'sharetracker'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+### 3) Install a MySQL DB driver in the app venv
+
+Use one of the following (either works with SQLAlchemy):
+
+- mysqlclient (faster, compiled):
+  ```bash
+  pip install mysqlclient
+  ```
+- or PyMySQL (pure Python):
+  ```bash
+  pip install pymysql
+  ```
+
+Note: If you choose PyMySQL, set `DB_ENGINE` to `mysql+pymysql`. For mysqlclient, use `mysql`.
+
+### 4) Set environment variables next to `run.py` (`ShareTracker-Web/sharetracker/.env`)
+
+```
+DEBUG=False
+DB_ENGINE=mysql            # or mysql+pymysql if using PyMySQL
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=sharetracker
+DB_USERNAME=sharetracker
+DB_PASS=strong_password_here
+```
+
+These map to `ProductionConfig.SQLALCHEMY_DATABASE_URI` in `apps/config.py`.
+
+### 5) Apply migrations (initialize schema on MySQL)
+
+From `ShareTracker-Web/sharetracker/` with the venv activated:
+
+```bash
+export FLASK_APP=run.py
+flask db upgrade
+```
+
+### 6) Run under your chosen server
+
+- Apache (mod_wsgi) via Virtualmin or
+- Gunicorn + Nginx
+
+Verify logs: the app prints the active DB URI when `DEBUG=True`; in production, you can temporarily set `DEBUG=True` to confirm configuration and then switch back to `False`.
+

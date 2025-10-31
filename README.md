@@ -2,6 +2,12 @@
 
 A simple stock portfolio tracking application for Australian equities.
 
+## To run the app locally (development mode):
+
+   - From `ShareTracker-Web/sharetracker/`: `flask run --host=127.0.0.1 --port=5000`
+   - Visit http://127.0.0.1:5000
+   - Login as Peter
+  
 ## What it does
 
 A stock portfolio tracking system that allows users to:
