@@ -1,0 +1,58 @@
+{% extends 'layouts/base-fullscreen.html' %}
+
+{% block title %} Register {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+  <!-- Page content -->
+
+<!--Add Portfolio Button to pop up modal -->
+<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#add_portfolio_modal">
+    Add Portfolio
+</button>
+
+<!-- Add Portfolio Modal -->
+<div class="modal fade" id="add_portfolio_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Portfolio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <section class="create-user-form container">
+                    <form method="post">
+                        <div class="form-group">
+                            <label for="portfolio_name">Portfolio Name</label>
+                            <input class="form-control col-7 mdb-autocomplete" type="text" name="portfolio_name" id="portfolio_name" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notes">Notes</label>
+                            <input class="form-control col-7 mdb-autocomplete" type="text" name="notes" id="notes" />
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-dark">
+                    Create
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}

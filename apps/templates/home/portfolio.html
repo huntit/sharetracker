@@ -19,14 +19,53 @@
             </nav>
           </div>
           <div class="col-lg-6 col-5 text-right">
-            <a href="#" class="btn btn-sm btn-neutral">New</a>
+            <!--'New' portfolio button to pop up modal -->
+            <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#add_portfolio_modal">New</button>
             <a href="#" class="btn btn-sm btn-neutral">Filters</a>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+
+
+
+<!-- Add Portfolio Modal -->
+<div class="modal fade" id="add_portfolio_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Portfolio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="/add_portfolio">
+              <div class="modal-body">
+                <section class="create-user-form container">
+                        <div class="form-group">
+                            <label for="portfolio_name">Portfolio Name</label>
+                            <input class="form-control col-7 mdb-autocomplete" type="text" name="portfolio_name" id="portfolio_name" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notes">Notes</label>
+                            <input class="form-control col-7 mdb-autocomplete" type="text" name="portfolio_notes" id="portfolio_notes" />
+                        </div>
+                </section>
+              </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-dark">Create</button>
+            </div>
+        </form>
+
+        </div>
+    </div>
+</div>
+
+
   <!-- Page content -->
   <div class="container-fluid mt--6">
 
@@ -35,7 +74,7 @@
       <div class="col">
         <div class="card bg-default shadow">
           <div class="card-header bg-transparent border-0">
-            <h3 class="text-white mb-0">CommSec</h3>
+            <h3 class="text-white mb-0">{{ portfolio[0].name }}</h3>
           </div>
           <div class="table-responsive">
             <table class="table align-items-center table-dark table-flush">
@@ -51,7 +90,7 @@
               </thead>
               <tbody class="list">
 
-                {% for stock in portfolio %}
+                {% for record in portfolio %}
                 <tr>
                   <th scope="row">
                     <div class="media align-items-center">
@@ -60,19 +99,19 @@
                       </a>
                       <div class="media-body">
                         <span class="code mb-0 text-sm">
-                          {{ stock.code }}
+                          {{ record.code + "  |  " + record.short_name }}
                         </span>
                       </div>
                     </div>
                   </th>
                   <td class="text-right">
-                    {{ stock.units }}
+                    {{ record.units }}
                   </td>
                   <td class="text-right">
-                    {{ stock.last }}
+                    {{ record.last }}
                   </td>
                   <td class="text-right">
-                    {{ stock.units * stock.last }}
+                    {{ "{:,.3f}".format(record.units * record.last) }}
                   </td>
                   <td class="text-right">
 <!--                    <div class="d-flex align-items-right">-->
@@ -85,14 +124,34 @@
                         <i class="fas fa-ellipsis-v"></i>
                       </a>
                       <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                        <a class="dropdown-item" href="#">Add Buy</a>
-                        <a class="dropdown-item" href="#">Add Sell</a>
+                        <a class="dropdown-item" href="#">Buy</a>
+                        <a class="dropdown-item" href="#">Sell</a>
                         <a class="dropdown-item" href="#">Delete</a>
                       </div>
                     </div>
                   </td>
                 </tr>
                 {% endfor %}
+
+<!--              Total Row -->
+                <tr>
+                  <th scope="row">
+                  </th>
+                  <td class="text-right">
+                  </td>
+                  <td class="text-right">
+                  </td>
+                  <td class="text-right">
+                    {{ "${:,.2f}".format(portfolio_value) }}
+                  </td>
+                  <td class="text-right">
+<!--                    <div class="d-flex align-items-right">-->
+                      <span class="change text-success mr-2"><i class="fa fa-arrow-up"></i> 10.46%</span>
+<!--                    </div>-->
+                  </td>
+                  <td class="text-right">
+                  </td>
+              </tr>
 
               </tbody>
             </table>
