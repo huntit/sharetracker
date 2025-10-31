@@ -30,6 +30,24 @@ The application uses SQLite with the following tables:
 - `Company_Info` - Company details (stock_code, date, long_name, industry, sector, long_business_summary, logo_url)
 - `History` - Historical price data (id, stock_code, date, open, high, low, close, volume)
 
+### ASCII ER Diagram
+
+```text
+ Users (id PK)
+   └─< Portfolio (id PK, user_id FK → Users.id)
+          └─< Portfolio_Stock (id PK, portfolio_id FK → Portfolio.id,
+                               stock_code FK → Stock.code)
+
+ Stock (code PK)
+   ├─ Company_Info (stock_code PK/FK → Stock.code)
+   └─< History (id PK, stock_code FK → Stock.code)
+
+Legend:
+- PK: Primary Key
+- FK: Foreign Key
+- └─< one-to-many relationship (parent ─ child)
+```
+
 The database file is located at: `ShareTracker-Web/sharetracker/apps/db.sqlite3`
 
 ## Project Structure

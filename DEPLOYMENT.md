@@ -111,49 +111,7 @@ python main.py daily
    sudo systemctl reload apache2
    ```
 
-### Option B: Apache Reverse Proxy to Gunicorn
-
-1. **Install packages:**
-   ```bash
-   sudo apt update
-   sudo apt install python3 python3-venv python3-pip
-   ```
-
-2. **Set up virtual environment and install dependencies** (same as Option A, step 3)
-
-3. **Run Gunicorn:**
-   ```bash
-   cd ShareTracker-Web/sharetracker
-   source venv/bin/activate
-   gunicorn --workers 3 --bind 127.0.0.1:8000 run:app
-   ```
-
-4. **Configure Apache reverse proxy in Virtualmin:**
-   - Enable proxy modules in Apache
-   - Configure VirtualHost to proxy requests to `http://127.0.0.1:8000`
-
-5. **Set up systemd service (recommended):**
-   Create `/etc/systemd/system/sharetracker.service`:
-   ```ini
-   [Unit]
-   Description=ShareTracker Gunicorn service
-   After=network.target
-
-   [Service]
-   User=www-data
-   WorkingDirectory=/path/to/sharetracker/ShareTracker-Web/sharetracker
-   Environment="PATH=/path/to/sharetracker/ShareTracker-Web/sharetracker/venv/bin"
-   ExecStart=/path/to/sharetracker/ShareTracker-Web/sharetracker/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8000 run:app
-
-   [Install]
-   WantedBy=multi-user.target
-   ```
-
-   Enable and start:
-   ```bash
-   sudo systemctl enable sharetracker
-   sudo systemctl start sharetracker
-   ```
+<!-- Option B intentionally removed: using Apache with mod_wsgi per project choice. -->
 
 ## Production Notes
 
